@@ -1,15 +1,18 @@
 import os
-import chardet
 import tkinter as tk
 from tkinter import filedialog, simpledialog
+import chardet
+
 
 def detect_encoding(filename):
+    """Function to detect the encoding of the file"""
     with open(filename, 'rb') as f:
         raw_data = f.read()
         result = chardet.detect(raw_data)
         return result['encoding']
 
 def process_attendees(filename, output_filename):
+    """Function to define the employee and partners lists"""
     employees = []
     partners = []
 
@@ -46,11 +49,11 @@ def process_attendees(filename, output_filename):
     for i in partners:
         output_lines.append(i)
     output_lines.append('+++++++++++++++++++++++++++++++++++++++++++++++')
-    
+
     # Print to terminal
     for line in output_lines:
         print(line)
-    
+
     # Write to output file
     with open(output_filename, 'w', encoding='utf-8') as f:
         for line in output_lines:
@@ -59,6 +62,7 @@ def process_attendees(filename, output_filename):
     print(f"Output written to {output_filename}")
 
 def select_file():
+    """Function to call tk to select files"""
     root = tk.Tk()
     root.withdraw()  # Hide the root window
     filename = filedialog.askopenfilename(
@@ -66,7 +70,8 @@ def select_file():
         filetypes=(("CSV files", "*.csv"), ("all files", "*.*"))
     )
     if filename:
-        output_filename = simpledialog.askstring("Output File", "Enter the output file name (with .txt extension):")
+        output_filename = simpledialog.askstring("Output File",
+            "Enter the output file name (with .txt extension):")
         if output_filename:
             if not output_filename.endswith('.txt'):
                 output_filename += '.txt'
